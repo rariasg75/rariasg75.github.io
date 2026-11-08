@@ -1,0 +1,515 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>misNotas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="misNotas: notas a mano en el iPad, el iPhone y el Mac. Información, guía rápida, soporte y política de privacidad.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: a ruled notebook. The hero is a page being written on; features are
+   a shelf of notebooks with coloured covers; privacy and support sit on paper. */
+:root {
+  --bg: #F6F5F1;
+  --surface: #FFFFFF;
+  --muted: #EDEBE5;
+  --text: #1C1D21;
+  --text-2: #6B6A66;
+  --line: #E8E5DD;
+  --accent: #2F5BEA;
+  --accent-strong: #1E3FB0;
+  --on-accent: #FFFFFF;
+  --rule: #E6ECF6;
+  --margin: #E7B3AC;
+  --highlight: rgba(217, 169, 62, .38);
+  --ink: #24408F;
+  --shadow: 0 1px 2px rgba(28, 29, 33, .06), 0 12px 32px rgba(28, 29, 33, .08);
+  --c1: #2E3F63; --c2: #C9694B; --c3: #D9A93E; --c4: #5E8466; --c5: #7A4E73; --c6: #3F7C82;
+  --font-ui: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Caveat", "Bradley Hand", "Segoe Print", cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #131417; --surface: #1C1E23; --muted: #24262C; --text: #ECEBE7; --text-2: #A3A29D;
+    --line: #2C2F36; --accent: #6F8FF5; --accent-strong: #9AB0F8; --on-accent: #0E1430;
+    --rule: #263045; --margin: #6B3A36; --highlight: rgba(217, 169, 62, .30); --ink: #B9C7F5;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #131417; --surface: #1C1E23; --muted: #24262C; --text: #ECEBE7; --text-2: #A3A29D;
+  --line: #2C2F36; --accent: #6F8FF5; --accent-strong: #9AB0F8; --on-accent: #0E1430;
+  --rule: #263045; --margin: #6B3A36; --highlight: rgba(217, 169, 62, .30); --ink: #B9C7F5;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 32px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px;
+}
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Header */
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+header.top .wrap {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding-block: 12px;
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-weight: 800; font-size: 1.125rem; letter-spacing: -.01em; }
+.brand svg { width: 32px; height: 32px; border-radius: 8px; flex: none; }
+nav.links { display: flex; gap: 20px; flex-wrap: wrap; }
+nav.links a { color: var(--text-2); text-decoration: none; font-weight: 600; font-size: .9375rem; }
+nav.links a:hover { color: var(--text); }
+
+/* Hero */
+.hero { padding-block: 64px 72px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .8125rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent-strong);
+}
+.eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.hero h1 {
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 3.75rem);
+  line-height: 1.05; letter-spacing: -.035em; font-weight: 800;
+  margin-block: 16px 20px;
+}
+.hero h1 .hand {
+  font-family: var(--font-hand); font-weight: 700; letter-spacing: 0;
+  font-size: 1.18em; color: var(--accent);
+  background: linear-gradient(transparent 58%, var(--highlight) 58%, var(--highlight) 92%, transparent 92%);
+  padding-inline: .08em;
+}
+.lede { font-size: 1.125rem; color: var(--text-2); max-width: 34em; }
+.devices { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+.chip {
+  font-size: .875rem; font-weight: 600; padding: 6px 12px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--line); color: var(--text);
+}
+.status { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: var(--on-accent); text-decoration: none;
+  font-weight: 700; padding: 12px 20px; border-radius: 14px; border: 0; font: inherit; font-weight: 700;
+  cursor: pointer;
+}
+.btn:hover { background: var(--accent-strong); }
+.status small { color: var(--text-2); font-size: .875rem; }
+
+/* The page being written on */
+.paper {
+  position: relative; background: var(--surface); border-radius: 4px 14px 14px 4px;
+  box-shadow: var(--shadow); padding: 34px 26px 30px 64px; min-height: 360px;
+  background-image:
+    linear-gradient(to right, transparent 46px, var(--margin) 46px, var(--margin) 48px, transparent 48px),
+    repeating-linear-gradient(to bottom, transparent 0 39px, var(--rule) 39px 40px);
+  background-position: 0 0, 0 22px;
+  transform: rotate(-1.2deg);
+}
+.paper::before {
+  /* binding */
+  content: ""; position: absolute; inset: 0 auto 0 0; width: 14px; border-radius: 4px 0 0 4px;
+  background: var(--c1);
+}
+.paper .note {
+  font-family: var(--font-hand); color: var(--ink); font-size: 1.75rem; line-height: 40px; font-weight: 500;
+}
+.paper .note b { font-weight: 700; }
+.paper .note .hl { background: var(--highlight); border-radius: 6px; padding-inline: 4px; }
+.paper .note .check { color: #2F7A4F; }
+:root[data-theme="dark"] .paper .note .check { color: #6FBF8E; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .paper .note .check { color: #6FBF8E; } }
+.paper svg.doodle { position: absolute; right: 22px; bottom: 26px; width: 110px; height: 80px; }
+.paper svg.doodle path, .paper svg.doodle circle { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Sections */
+section.block { padding-block: 56px; border-top: 1px solid var(--line); }
+.section-head { display: grid; gap: 8px; margin-bottom: 32px; max-width: 40em; }
+.section-head h2 { font-size: clamp(1.625rem, 1.2rem + 1.6vw, 2.25rem); letter-spacing: -.025em; line-height: 1.15; font-weight: 800; }
+.section-head p { color: var(--text-2); font-size: 1.0625rem; }
+
+/* Shelf of notebooks */
+.shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.book {
+  position: relative; background: var(--surface); border: 1px solid var(--line);
+  border-radius: 4px 14px 14px 4px; padding: 22px 22px 24px 34px; min-width: 0;
+}
+.book::before {
+  content: ""; position: absolute; inset: -1px auto -1px -1px; width: 12px;
+  border-radius: 4px 0 0 4px; background: var(--cover);
+}
+.book h3 { font-size: 1.0625rem; font-weight: 700; margin-bottom: 6px; letter-spacing: -.01em; }
+.book p { color: var(--text-2); font-size: .9375rem; }
+.book .label { font-family: var(--font-hand); font-size: 1.25rem; color: var(--cover); font-weight: 700; display: block; margin-bottom: 4px; line-height: 1.1; }
+
+/* Guide */
+.guide { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 20px; }
+details {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 0 18px; min-width: 0;
+}
+summary {
+  cursor: pointer; list-style: none; font-weight: 700; padding-block: 14px;
+  display: flex; justify-content: space-between; gap: 12px; align-items: center;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; color: var(--text-2); font-weight: 600; font-size: 1.25rem; line-height: 1; }
+details[open] summary::after { content: "–"; }
+details ul { margin: 0 0 16px; padding-left: 1.1em; color: var(--text-2); font-size: .9375rem; display: grid; gap: 6px; }
+
+/* Privacy */
+.policy {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 28px clamp(18px, 4vw, 40px); max-width: 760px;
+}
+.policy h3 { font-size: 1.125rem; margin-bottom: 4px; }
+.policy .meta { color: var(--text-2); font-size: .875rem; margin-bottom: 20px; }
+.policy .lead { margin-bottom: 18px; font-size: 1.0625rem; }
+.policy dl { margin: 0; display: grid; gap: 14px; }
+.policy dt { font-weight: 700; }
+.policy dd { margin: 2px 0 0; color: var(--text-2); }
+.policy .contact { margin-top: 20px; }
+.policy details { margin-top: 24px; background: var(--muted); border-color: transparent; }
+.policy details dl { padding-bottom: 18px; }
+.tag-lang { font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); }
+
+/* Support */
+.support { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; min-width: 0; }
+.card h3 { font-size: 1.0625rem; margin-bottom: 8px; }
+.card p { color: var(--text-2); }
+.email-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+.email {
+  font-weight: 700; font-size: 1.0625rem; color: var(--text); user-select: all;
+  background: var(--muted); padding: 8px 12px; border-radius: 10px; overflow-wrap: anywhere;
+}
+.copy {
+  font: inherit; font-weight: 600; font-size: .875rem; cursor: pointer;
+  background: transparent; color: var(--accent); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px;
+}
+.copy:hover { border-color: var(--accent); }
+
+footer { border-top: 1px solid var(--line); padding-block: 28px 40px; color: var(--text-2); font-size: .875rem; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .support { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .hero { padding-block: 40px 48px; }
+  nav.links { gap: 14px; }
+  nav.links a.opt { display: none; }
+  .shelf, .guide { grid-template-columns: minmax(0, 1fr); }
+  .paper { padding-left: 56px; transform: none; min-height: 320px; }
+  .paper .note { font-size: 1.5rem; }
+  .paper svg.doodle { width: 84px; height: 62px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .paper { transition: transform .4s ease; }
+  .paper:hover { transform: rotate(0deg); }
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="misNotas, inicio">
+      <svg viewBox="0 0 1024 1024" aria-hidden="true"><rect width="1024" height="1024" fill="#2F5BEA"/><g transform="translate(148 148) scale(30.333)" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"><path d="M6.25 3.25H16.5a2.25 2.25 0 0 1 2.25 2.25v13a2.25 2.25 0 0 1-2.25 2.25H6.25a1 1 0 0 1-1-1V4.25a1 1 0 0 1 1-1z"/><path d="M15.25 3.25v17.5"/></g></svg>
+      misNotas
+    </a>
+    <nav class="links" aria-label="Secciones">
+      <a class="opt" href="#funciones">Funciones</a>
+      <a class="opt" href="#guia">Guía</a>
+      <a href="#privacidad">Privacidad</a>
+      <a href="#soporte">Soporte</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Cuaderno digital</span>
+        <h1>Tus notas <span class="hand">a mano</span>, en el iPad, el iPhone y el Mac.</h1>
+        <p class="lede">misNotas es un cuaderno para escribir y dibujar con el Apple Pencil o con el dedo. Organiza tus apuntes en blocs y carpetas, y tenlos en todos tus dispositivos con tu iCloud.</p>
+        <div class="devices" aria-label="Dispositivos">
+          <span class="chip">iPad</span>
+          <span class="chip">iPhone</span>
+          <span class="chip">Mac</span>
+        </div>
+        <div class="status">
+          <a class="btn" href="#funciones">Ver qué puede hacer</a>
+          <small>Próximamente en el App Store</small>
+        </div>
+      </div>
+
+      <div class="paper" role="img" aria-label="Una página rayada de misNotas con una lista escrita a mano">
+        <div class="note">
+          <b>Lunes</b> · apuntes<br>
+          <span class="check">✓</span> repasar el <span class="hl">tema 4</span><br>
+          <span class="check">✓</span> boceto de la portada<br>
+          □ comprar cuaderno… ¡ya no!<br>
+          □ llamar a Marta
+        </div>
+        <svg class="doodle" viewBox="0 0 110 80" aria-hidden="true">
+          <path d="M8 62 C 28 20, 52 14, 64 38 S 92 70, 104 22"/>
+          <path d="M94 20 L104 22 L102 32"/>
+          <circle cx="20" cy="22" r="9"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="funciones">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Todo lo que esperas de un cuaderno</h2>
+        <p>Y lo que el papel no puede hacer: deshacer, mover lo escrito, buscar una nota en segundos y llevarla a todas partes.</p>
+      </div>
+      <div class="shelf">
+        <article class="book" style="--cover: var(--c1)">
+          <span class="label">Escribir</span>
+          <h3>Escritura natural</h3>
+          <p>Bolígrafo, resaltador y puntero láser. Con el Apple Pencil, la palma de la mano no deja marcas y el dedo mueve la página.</p>
+        </article>
+        <article class="book" style="--cover: var(--c2)">
+          <span class="label">Blocs</span>
+          <h3>Blocs con portada</h3>
+          <p>Crea blocs de notas con una portada de color y, si quieres, una imagen. Cambia la portada cuando te apetezca.</p>
+        </article>
+        <article class="book" style="--cover: var(--c3)">
+          <span class="label">Ordenar</span>
+          <h3>Carpetas, favoritas y etiquetas</h3>
+          <p>Guarda tus notas en carpetas, marca las importantes con una estrella y agrúpalas con etiquetas de colores.</p>
+        </article>
+        <article class="book" style="--cover: var(--c4)">
+          <span class="label">iCloud</span>
+          <h3>Las mismas notas en todas partes</h3>
+          <p>Elige una carpeta de iCloud Drive y tus notas aparecen en el iPad, el iPhone y el Mac. Si editas una nota en dos sitios, no pierdes ninguna versión.</p>
+        </article>
+        <article class="book" style="--cover: var(--c5)">
+          <span class="label">PDF</span>
+          <h3>PDF, imágenes y texto</h3>
+          <p>Importa un PDF y escribe encima, inserta fotos y recórtalas, y añade texto donde toques en la página.</p>
+        </article>
+        <article class="book" style="--cover: var(--c6)">
+          <span class="label">Herramientas</span>
+          <h3>Formas, zoom y pegatinas</h3>
+          <p>Las formas se enderezan solas, la ventana de zoom te deja escribir en grande y lo que más usas se guarda como pegatina.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="guia">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Guía rápida</h2>
+        <p>Lo esencial para empezar. Tienes la guía completa en la app, en Configuración › Ayuda.</p>
+      </div>
+      <div class="guide">
+        <details open>
+          <summary>Primeros pasos</summary>
+          <ul>
+            <li>Pulsa el botón + para crear una nota o un bloc de notas, o para importar un PDF o una nota.</li>
+            <li>Inicio muestra tus notas recientes; Explorar, todas tus notas y carpetas; Pizarra es una hoja rápida para apuntes sueltos.</li>
+            <li>Toca una nota para abrirla. Se guarda sola mientras escribes.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Escribir y dibujar</summary>
+          <ul>
+            <li>Elige el bolígrafo, el resaltador, el bolígrafo con formas o el puntero láser. Vuelve a tocar la herramienta para cambiar el grosor y el color.</li>
+            <li>Con el Apple Pencil, el dedo mueve y amplía la página. Activa «Dibujar con el dedo» para escribir con el dedo.</li>
+            <li>Marca con la estrella tus bolígrafos y colores favoritos para tenerlos a mano.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Borrar, seleccionar y ampliar</summary>
+          <ul>
+            <li>El borrador quita trazos completos o solo la parte que tocas.</li>
+            <li>Con Seleccionar, rodea trazos e imágenes para moverlos, cambiar su tamaño, duplicarlos o guardarlos como pegatina.</li>
+            <li>La ventana de zoom amplía una zona de la página para escribir en grande.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Texto, imágenes y PDF</summary>
+          <ul>
+            <li>Pulsa el botón de texto y toca en la página el lugar donde quieres escribir.</li>
+            <li>Con Foto insertas imágenes de Fotos o de Archivos; tócalas para recortarlas o usarlas de fondo.</li>
+            <li>Importa un PDF para escribir sobre sus páginas.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Organizar</summary>
+          <ul>
+            <li>En Explorar puedes crear carpetas y moverte por ellas.</li>
+            <li>Mantén pulsada una nota para seleccionarla y usa la barra inferior para renombrarla, cambiar la portada, marcarla como favorita, etiquetarla, moverla o exportarla.</li>
+            <li>En Inicio, la estrella muestra solo tus favoritas y el botón de etiquetas, las notas de una etiqueta.</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Sincronizar con iCloud</summary>
+          <ul>
+            <li>En Configuración › Sincronización, elige una carpeta de iCloud Drive en cada dispositivo.</li>
+            <li>Los cambios llegan solos a los demás dispositivos.</li>
+            <li>Si cambias la misma nota en dos dispositivos a la vez, misNotas conserva las dos versiones y te deja elegir.</li>
+          </ul>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="privacidad">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Política de privacidad</h2>
+        <p>Tus notas son tuyas. misNotas no las ve, no las envía a ningún sitio y no sabe quién eres.</p>
+      </div>
+      <article class="policy" lang="es">
+        <h3>Política de privacidad de misNotas</h3>
+        <p class="meta">Última actualización: 29 de octubre de 2026</p>
+        <p class="lead">misNotas es una aplicación para tomar notas a mano en el iPad, el iPhone y el Mac, desarrollada por Roberto Arias.</p>
+        <dl>
+          <div>
+            <dt>No recogemos datos</dt>
+            <dd>misNotas no tiene cuentas, ni publicidad, ni analítica, y no envía tus notas ni ningún otro dato a servidores del desarrollador.</dd>
+          </div>
+          <div>
+            <dt>Tus notas</dt>
+            <dd>Se guardan en tu dispositivo y, si eliges una carpeta de iCloud Drive en Configuración › Sincronización, en tu cuenta de iCloud. Apple las guarda según su propia política de privacidad. Si activas la Protección de datos avanzada de iCloud, quedan cifradas de extremo a extremo.</dd>
+          </div>
+          <div>
+            <dt>Fotos y cámara</dt>
+            <dd>La app solo accede a las fotos que eliges para insertarlas en una nota, y a la cámara solo si la usas para hacer una foto. Las imágenes se guardan dentro de la nota.</dd>
+          </div>
+          <div>
+            <dt>Archivos</dt>
+            <dd>La app solo abre los archivos (notas, PDF) que eliges o que abres con ella desde Archivos o Finder.</dd>
+          </div>
+          <div>
+            <dt>Ajustes</dt>
+            <dd>Tus preferencias se guardan en el dispositivo.</dd>
+          </div>
+        </dl>
+        <p class="contact">Si tienes preguntas, escribe a <strong>rariasg@outlook.com</strong>.</p>
+
+        <details lang="en" id="privacy">
+          <summary><span><span class="tag-lang">English</span> · Privacy policy</span></summary>
+          <p class="meta">Last updated: 29 October 2026</p>
+          <p class="lead">misNotas is an app for handwritten notes on iPad, iPhone and Mac, developed by Roberto Arias.</p>
+          <dl>
+            <div>
+              <dt>We collect no data</dt>
+              <dd>misNotas has no accounts, ads or analytics, and sends neither your notes nor any other data to the developer's servers.</dd>
+            </div>
+            <div>
+              <dt>Your notes</dt>
+              <dd>They are stored on your device and, if you choose an iCloud Drive folder in Settings › Sync, in your iCloud account. Apple stores them under its own privacy policy. With iCloud Advanced Data Protection turned on, they are end-to-end encrypted.</dd>
+            </div>
+            <div>
+              <dt>Photos and camera</dt>
+              <dd>The app only accesses the photos you pick to insert into a note, and the camera only if you use it to take a photo. Images are stored inside the note.</dd>
+            </div>
+            <div>
+              <dt>Files</dt>
+              <dd>The app only opens the files (notes, PDFs) you pick or open with it from Files or Finder.</dd>
+            </div>
+            <div>
+              <dt>Settings</dt>
+              <dd>Your preferences are stored on the device.</dd>
+            </div>
+          </dl>
+          <p class="contact" style="padding-bottom:18px">For any questions, write to <strong>rariasg@outlook.com</strong>.</p>
+        </details>
+      </article>
+    </div>
+  </section>
+
+  <section class="block" id="soporte">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Soporte</h2>
+        <p>¿Algo no funciona o echas algo en falta? Escríbeme y te respondo lo antes posible.</p>
+      </div>
+      <div class="support">
+        <div class="card">
+          <h3>Roberto Arias</h3>
+          <p>Desarrollador de misNotas</p>
+          <div class="email-row">
+            <span class="email" id="email">rariasg@outlook.com</span>
+            <button class="copy" id="copy-email" type="button">Copiar</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Antes de escribir</h3>
+          <p>Indica tu dispositivo (iPad, iPhone o Mac), la versión de misNotas, que encontrarás en Configuración › Acerca de, y qué estabas haciendo cuando ocurrió el problema.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Roberto Arias · misNotas</span>
+    <span>Basado en Saber, software libre bajo licencia GPL-3.0</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var button = document.getElementById('copy-email');
+    var email = document.getElementById('email');
+    button.addEventListener('click', function () {
+      var text = email.textContent.trim();
+      function selectIt() {
+        var range = document.createRange();
+        range.selectNodeContents(email);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        button.textContent = 'Seleccionado';
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () {
+          button.textContent = 'Copiado';
+        }, selectIt);
+      } catch (e) {
+        selectIt();
+      }
+      setTimeout(function () { button.textContent = 'Copiar'; }, 2000);
+    });
+  })();
+</script>
+
+</body></html>
